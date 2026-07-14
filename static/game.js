@@ -1,106 +1,109 @@
-
 const socket = io();
 
 
-
-// CREAR TABLERO 4x4x4
 
 const tablero = document.getElementById("tablero");
 
 
 
-for(let z = 0; z < 4; z++){
 
 
-    let capa = document.createElement("div");
-
-    capa.className="capa";
-
-
-
-    let titulo=document.createElement("h3");
-
-    titulo.innerHTML="NIVEL Z = "+z;
-
-
-    capa.appendChild(titulo);
-
-
-
-
-    let plano=document.createElement("div");
-
-    plano.className="plano";
+let jugadorActual = "";
 
 
 
 
 
-    for(let y=0;y<4;y++){
+function crearTablero(){
 
 
-        for(let x=0;x<4;x++){
+    tablero.innerHTML="";
 
 
-
-            let casilla=document.createElement("button");
-
-
-            casilla.className="casilla";
+    for(let z = 0; z < 4; z++){
 
 
-            casilla.dataset.x=x;
+        let capa=document.createElement("div");
 
-            casilla.dataset.y=y;
-
-            casilla.dataset.z=z;
+        capa.className="capa";
 
 
+        let titulo=document.createElement("h3");
+
+        titulo.innerText="NIVEL Z = "+z;
 
 
-
-            casilla.onclick=function(){
-
-
-
-                socket.emit(
-
-                    "movimiento",
-
-                    {
-
-                        x:x,
-
-                        y:y,
-
-                        z:z
-
-                    }
-
-                );
-
-
-            };
+        capa.appendChild(titulo);
 
 
 
 
-            plano.appendChild(casilla);
+
+        let plano=document.createElement("div");
+
+        plano.className="plano";
+
+
+
+
+
+        for(let y=0;y<4;y++){
+
+
+            for(let x=0;x<4;x++){
+
+
+                let casilla=document.createElement("button");
+
+
+                casilla.className="casilla";
+
+
+                casilla.dataset.x=x;
+
+                casilla.dataset.y=y;
+
+                casilla.dataset.z=z;
+
+
+
+
+
+                casilla.onclick=function(){
+
+
+
+                    realizarMovimiento(
+                        x,
+                        y,
+                        z
+                    );
+
+
+                };
+
+
+
+
+
+                plano.appendChild(casilla);
+
+
+
+            }
 
 
         }
 
 
+
+        capa.appendChild(plano);
+
+
+        tablero.appendChild(capa);
+
+
     }
-
-
-
-
-
-    capa.appendChild(plano);
-
-
-    tablero.appendChild(capa);
 
 
 }
@@ -108,7 +111,45 @@ for(let z = 0; z < 4; z++){
 
 
 
-// ACTUALIZACION DE MOVIMIENTOS
+
+
+crearTablero();
+
+
+
+
+
+
+
+
+
+function realizarMovimiento(x,y,z){
+
+
+    socket.emit(
+
+        "movimiento",
+
+        {
+
+            x:x,
+
+            y:y,
+
+            z:z
+
+        }
+
+    );
+
+
+}
+
+
+
+
+
+
 
 
 
@@ -119,31 +160,29 @@ socket.on(
 (data)=>{
 
 
-
     colocarFicha(data);
 
 
 
+    if(data.turno){
 
 
-    actualizarTurno(data.turno);
+        actualizarTurno(
+            data.turno
+        );
 
 
-
-
-    document.getElementById("coordenadas").innerHTML=
-
-
-    `X=${data.x}
-     Y=${data.y}
-     Z=${data.z}`;
+    }
 
 
 
+    if(data.x!==undefined){
 
 
-    mostrarMensaje(data.mensaje);
+        actualizarCoordenadas(data);
 
+
+    }
 
 
 
@@ -152,13 +191,19 @@ socket.on(
     if(data.linea){
 
 
-
-        marcarVictoria(data.linea);
-
+        mostrarVictoria(data);
 
 
-        mostrarGanador(data.ganador);
+    }
 
+
+
+    if(data.mensaje){
+
+
+        mostrarMensaje(
+            data.mensaje
+        );
 
 
     }
@@ -172,7 +217,7 @@ socket.on(
 
 
 
-// COLOCAR FICHA
+
 
 
 function colocarFicha(data){
@@ -185,7 +230,9 @@ function colocarFicha(data){
 
 
 
-    casillas.forEach((casilla)=>{
+
+
+    casillas.forEach(casilla=>{
 
 
 
@@ -197,17 +244,18 @@ function colocarFicha(data){
 
             casilla.dataset.z==data.z
 
+
         ){
 
 
 
-            casilla.innerHTML=data.jugador;
+            casilla.innerText=data.jugador;
 
 
 
             casilla.classList.add(
 
-                data.jugador=="X"
+                data.jugador==="X"
 
                 ?
 
@@ -224,7 +272,6 @@ function colocarFicha(data){
         }
 
 
-
     });
 
 
@@ -234,7 +281,88 @@ function colocarFicha(data){
 
 
 
-// ESTADO DE JUGADORES
+
+
+
+
+
+function actualizarTurno(jugador){
+
+
+
+    jugadorActual=jugador;
+
+
+
+    let turno=
+
+    document.getElementById("turno");
+
+
+
+    turno.innerText=
+
+    "Jugador "+jugador;
+
+
+
+
+
+    if(jugador==="X"){
+
+
+
+        turno.style.color="#38bdf8";
+
+
+
+    }
+
+    else{
+
+
+
+        turno.style.color="#fb7185";
+
+
+
+    }
+
+
+
+}
+
+
+
+
+
+
+
+
+function actualizarCoordenadas(data){
+
+
+
+    document.getElementById(
+
+        "coordenadas"
+
+    ).innerText=
+
+
+    "X="+data.x+
+    "  Y="+data.y+
+    "  Z="+data.z;
+
+
+
+}
+
+
+
+
+
+
 
 
 
@@ -246,7 +374,11 @@ socket.on(
 
 
 
-    document.getElementById("jugadores").innerHTML=
+    document.getElementById(
+
+        "jugadores"
+
+    ).innerText=
 
 
     data.jugadores+" / 2";
@@ -254,19 +386,38 @@ socket.on(
 
 
 
-    document.getElementById("estado").innerHTML=
 
+    let estado=
+
+    document.getElementById(
+
+        "estado"
+
+    );
+
+
+
+
+
+    estado.innerText=
 
     data.estado;
 
 
 
-    if(data.jugadores==2){
+    if(data.jugadores===2){
 
 
-        document.getElementById("estado")
+        estado.style.color="#22c55e";
 
-        .classList.add("online");
+
+    }
+
+
+    else{
+
+
+        estado.style.color="#facc15";
 
 
     }
@@ -279,131 +430,42 @@ socket.on(
 
 
 
-// CAMBIO DE TURNO
 
 
 
-function actualizarTurno(jugador){
 
+function mostrarVictoria(data){
 
 
-    let elemento=
 
-    document.getElementById("turno");
+    if(!data.linea)
+        return;
 
 
 
-    elemento.innerHTML=
 
-    "Jugador "+jugador;
 
+    data.linea.forEach(posicion=>{
 
 
-    elemento.style.transition=".3s";
 
+        document
 
+        .querySelectorAll(".casilla")
 
+        .forEach(casilla=>{
 
-    if(jugador=="X"){
 
-
-        elemento.style.color="#38bdf8";
-
-
-        elemento.style.textShadow=
-
-        "0 0 20px #38bdf8";
-
-
-    }
-
-    else{
-
-
-        elemento.style.color="#fb7185";
-
-
-        elemento.style.textShadow=
-
-        "0 0 20px #fb7185";
-
-
-    }
-
-
-}
-
-
-
-
-
-
-
-// MENSAJES
-
-
-function mostrarMensaje(texto){
-
-
-
-    let mensaje=
-
-    document.getElementById("mensaje-final");
-
-
-
-    mensaje.innerHTML=texto;
-
-
-
-    mensaje.style.animation="none";
-
-
-
-    setTimeout(()=>{
-
-
-        mensaje.style.animation="";
-
-
-    },10);
-
-
-
-}
-
-
-
-// RESALTAR VICTORIA
-
-
-
-function marcarVictoria(linea){
-
-
-
-    let casillas=
-
-    document.querySelectorAll(".casilla");
-
-
-
-
-    linea.forEach((posicion)=>{
-
-
-
-        casillas.forEach((casilla)=>{
 
 
 
             if(
 
-                casilla.dataset.x==posicion.x &&
+            casilla.dataset.x==posicion.x &&
 
-                casilla.dataset.y==posicion.y &&
+            casilla.dataset.y==posicion.y &&
 
-                casilla.dataset.z==posicion.z
+            casilla.dataset.z==posicion.z
 
             ){
 
@@ -421,6 +483,7 @@ function marcarVictoria(linea){
 
 
 
+
         });
 
 
@@ -429,34 +492,33 @@ function marcarVictoria(linea){
 
 
 
+
+
 }
 
 
 
 
 
-// MOSTRAR GANADOR
 
 
 
-function mostrarGanador(jugador){
+
+function mostrarMensaje(texto){
 
 
 
     let mensaje=
 
-    document.getElementById("mensaje-final");
+    document.getElementById(
+
+        "mensaje-final"
+
+    );
 
 
 
-    mensaje.innerHTML=
-
-
-    "GANADOR: JUGADOR "+jugador;
-
-
-
-    mensaje.style.color="#facc15";
+    mensaje.innerText=texto;
 
 
 
@@ -464,37 +526,15 @@ function mostrarGanador(jugador){
 
 
 
-// ERRORES
+
+
+
 
 
 
 socket.on(
 
-"error",
-
-(mensaje)=>{
-
-
-    mostrarMensaje(
-
-        mensaje
-
-    );
-
-
-});
-
-
-
-
-
-
-// REINICIO
-
-
-socket.on(
-
-"reiniciado",
+"reiniciar",
 
 ()=>{
 
@@ -503,6 +543,9 @@ socket.on(
 
 
 });
+
+
+
 
 
 
@@ -529,32 +572,31 @@ function reiniciar(){
 
 
 
-
 function limpiarTablero(){
 
 
 
-    let casillas=
+    document
 
-    document.querySelectorAll(".casilla");
+    .querySelectorAll(".casilla")
 
-
-
-    casillas.forEach((casilla)=>{
+    .forEach(casilla=>{
 
 
 
-        casilla.innerHTML="";
+        casilla.innerText="";
 
 
-        casilla.classList.remove("x");
 
+        casilla.classList.remove(
 
-        casilla.classList.remove("o");
+            "x",
 
+            "o",
 
-        casilla.classList.remove("ganadora");
+            "ganadora"
 
+        );
 
 
     });
@@ -563,19 +605,23 @@ function limpiarTablero(){
 
 
 
-    document.getElementById("turno").innerHTML=
+    document.getElementById(
 
-    "Jugador X";
+        "coordenadas"
 
-
-
-    document.getElementById("coordenadas").innerHTML=
+    ).innerText=
 
     "X=- Y=- Z=-";
 
 
 
-    document.getElementById("mensaje-final").innerHTML="";
+
+
+    document.getElementById(
+
+        "mensaje-final"
+
+    ).innerText="";
 
 
 
@@ -584,13 +630,16 @@ function limpiarTablero(){
 
 
 
-// SALIR
+
+
 
 
 function salir(){
 
 
-    window.close();
+
+    window.location.href="/";
+
 
 
 }
