@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_socketio import SocketIO, emit
 
 app = Flask(__name__)
@@ -14,6 +14,8 @@ socketio = SocketIO(
 
 
 # VARIABLES DEL JUEGO
+
+
 def crear_tablero():
 
     return [
@@ -27,56 +29,62 @@ def crear_tablero():
         for z in range(4)
     ]
 
+
 tablero = crear_tablero()
 
 turno = "X"
-
 ganador = None
-
-jugadores = 0
-
 linea_ganadora = []
 
 
-# GENERAR LAS 76 LINEAS DE VICTORIA
+# Guardar jugadores reales conectados
+jugadores_conectados = set()
+
+
+
+# GENERAR LINEAS GANADORAS
+
 
 def generar_lineas_ganadoras():
 
     lineas = []
 
-    # Direcciones principales
-
 
     direcciones = [
 
-        (1,0,0),   # X
-        (0,1,0),   # Y
-        (0,0,1),   # Z
-        (1,1,0),   # XY
+        (1,0,0),
+        (0,1,0),
+        (0,0,1),
+        (1,1,0),
         (1,-1,0),
-        (1,0,1),   # XZ
+        (1,0,1),
         (1,0,-1),
-        (0,1,1),   # YZ
+        (0,1,1),
         (0,1,-1),
-        (1,1,1),   # 3D
+        (1,1,1),
         (1,1,-1),
         (1,-1,1),
         (1,-1,-1)
     ]
+
 
     for z in range(4):
         for y in range(4):
             for x in range(4):
                 for dx,dy,dz in direcciones:
                     linea=[]
+
                     for i in range(4):
                         nx=x+(dx*i)
                         ny=y+(dy*i)
                         nz=z+(dz*i)
+
+
                         if (
                             0 <= nx < 4 and
                             0 <= ny < 4 and
                             0 <= nz < 4
+
                         ):
                             linea.append(
                                 {
@@ -85,100 +93,100 @@ def generar_lineas_ganadoras():
                                     "z":nz
                                 }
                             )
-
                         else:
                             break
+
 
                     if len(linea)==4:
                         if linea not in lineas:
                             lineas.append(linea)
+
     return lineas
+
 
 LINEAS_GANADORAS = generar_lineas_ganadoras()
 
 
-# VERIFICAR GANADOR
+
+# COMPROBAR GANADOR
+
 
 def comprobar_ganador(jugador):
 
     for linea in LINEAS_GANADORAS:
 
-        completa=True
+        gana=True
 
         for posicion in linea:
+
             x=posicion["x"]
             y=posicion["y"]
             z=posicion["z"]
 
             if tablero[z][y][x] != jugador:
-                completa=False
+                gana=False
                 break
 
-        if completa:
+        if gana:
             return linea
     return None
 
 
-# PAGINA PRINCIPAL
+# PAGINA
+
 
 @app.route("/")
-def inicio():
+def index():
     return render_template(
         "index.html"
     )
 
 
-# CONEXIONES
+# JUGADORES
+
+
+def emitir_estado():
+
+    cantidad=len(jugadores_conectados)
+
+    if cantidad==0:
+        estado="Esperando jugadores"
+    elif cantidad==1:
+        estado="Esperando segundo jugador"
+    else:
+        estado="Partida iniciada"
+
+
+    socketio.emit(
+        "estado_jugadores",
+        {
+            "jugadores":cantidad,
+            "estado":estado
+        }
+    )
+
 
 @socketio.on("connect")
 def conectar():
-
-    global jugadores
-
-    jugadores += 1
-
-    if jugadores > 2:
-        jugadores = 2
-
+    jugadores_conectados.add(
+        request.sid
+    )
     emitir_estado()
+
+
 
 
 @socketio.on("disconnect")
 def desconectar():
-    global jugadores
-    jugadores -= 1
-    if jugadores < 0:
-        jugadores=0
+
+    jugadores_conectados.discard(
+        request.sid
+    )
+
     emitir_estado()
 
 
-def emitir_estado():
-    estado=""
-    if jugadores == 0:
-
-        estado="Esperando jugadores"
-
-    elif jugadores == 1:
-
-        estado="Esperando segundo jugador"
-
-    else:
-
-        estado="Partida iniciada"
-
-    emit(
-
-        "estado_jugadores",
-        {
-            "jugadores":jugadores,
-            "estado":estado
-        },
-        broadcast=True
-    )
-
-
-
-# MOVIMIENTOS
+# MOVIMIENTO
 
 @socketio.on("movimiento")
 def movimiento(data):
@@ -187,32 +195,35 @@ def movimiento(data):
     global ganador
     global linea_ganadora
 
-    if jugadores < 2:
+
+    if len(jugadores_conectados)<2:
+
         emit(
             "error",
             "Esperando segundo jugador"
         )
         return
 
-    if ganador:
 
+    if ganador:
         return
 
+
     x=data["x"]
-
     y=data["y"]
-
     z=data["z"]
 
-    if tablero[z][y][x] != "":
+
+
+
+    if tablero[z][y][x]!="":
 
         emit(
             "error",
-            "Movimiento inválido: casilla ocupada"
+            "Casilla ocupada"
         )
 
         return
-
 
     jugador=turno
 
@@ -222,78 +233,28 @@ def movimiento(data):
         jugador
     )
 
+    mensaje=""
 
     if linea:
 
         ganador=jugador
-
         linea_ganadora=linea
 
-
-        mensaje=(
-            "Jugador "
-            + jugador
-            + " ganó"
-        )
-
+        mensaje="Jugador "+jugador+" ganó"
 
     else:
 
+        turno = (
+            "O"
+            if turno=="X"
+            else
+            "X"
+        )
 
-        lleno=True
-
-
-        for z1 in range(4):
-
-            for y1 in range(4):
-
-                for x1 in range(4):
-
-                    if tablero[z1][y1][x1]=="":
-
-                        lleno=False
+        mensaje="Turno jugador "+turno
 
 
-
-        if lleno:
-
-
-            mensaje="Empate"
-
-
-            ganador="EMPATE"
-
-
-
-        else:
-
-
-            turno=(
-
-                "O"
-
-                if turno=="X"
-
-                else
-
-                "X"
-
-            )
-
-
-            mensaje=(
-
-                "Turno jugador "
-
-                + turno
-
-            )
-
-
-
-
-
-    emit(
+    socketio.emit(
         "actualizar",
         {
             "x":x,
@@ -304,15 +265,16 @@ def movimiento(data):
             "ganador":ganador,
             "linea":linea,
             "mensaje":mensaje
-        },
-        broadcast=True
+        }
     )
 
 
-# REINICIO
+# REINICIO SIN RECARGAR PAGINA
+
 
 @socketio.on("reiniciar")
 def reiniciar():
+
     global tablero
     global turno
     global ganador
@@ -326,13 +288,16 @@ def reiniciar():
 
     linea_ganadora=[]
 
-    emit(
-        "reiniciado",
-        broadcast=True
+
+
+    socketio.emit(
+        "reiniciado"
     )
 
+    emitir_estado()
 
-# EJECUCION
+
+# INICIO
 
 if __name__=="__main__":
 
