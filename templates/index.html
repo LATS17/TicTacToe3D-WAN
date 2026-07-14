@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Tic Tac Toe 3D WAN</title>
+
+
+<link rel="stylesheet"
+href="{{url_for('static',filename='style.css')}}">
+
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+<header>
+
+<h1>
+Tic Tac Toe 3D
+</h1>
+
+<p>
+Modo multijugador WAN
+</p>
+
+</header>
+
+
+
+<section class="panel">
+
+
+<div class="info">
+
+<h3>
+Estado del juego
+</h3>
+
+
+<div id="mensaje">
+Esperando jugadores...
+</div>
+
+
+<div id="turno">
+Turno: X
+</div>
+
+
+<div id="coordenadas">
+Última jugada:
+</div>
+
+
+</div>
+
+
+
+<div class="acciones">
+
+
+<button onclick="reiniciar()">
+
+Nueva partida
+
+</button>
+
+
+
+<button onclick="salir()">
+
+Salir
+
+</button>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+<section id="tablero"></section>
+
+
+
+</div>
+
+
+
+
+
+<script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
+
+
+<script src="{{url_for('static',filename='game.js')}}"></script>
+
+
+
+</body>
+
+
+</html>
