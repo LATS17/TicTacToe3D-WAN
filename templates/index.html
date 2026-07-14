@@ -1,30 +1,19 @@
 <!DOCTYPE html>
-
 <html lang="es">
-
 
 <head>
 
+    <meta charset="UTF-8">
 
-<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
-<title>
-Tic Tac Toe 3D WAN
-</title>
+    <title>Tic Tac Toe 3D WAN</title>
 
 
-
-<link rel="stylesheet"
-href="{{ url_for('static', filename='style.css') }}">
-
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
 
 </head>
-
 
 
 <body>
@@ -33,43 +22,129 @@ href="{{ url_for('static', filename='style.css') }}">
 <div class="container">
 
 
+    <header>
 
-<header>
+        <h1>Tic Tac Toe 3D</h1>
 
+        <p>Quantum Multiplayer Arena</p>
 
-<h1>
-Tic Tac Toe 3D WAN
-</h1>
-
-
-<p>
-Juego multijugador en red WAN
-</p>
-
-
-</header>
+    </header>
 
 
 
 
-
-<section class="control-panel">
-
+    <section class="hud">
 
 
-<div class="status-box">
+        <div class="panel">
+
+            <span>Servidor</span>
+
+            <strong id="estado">
+                Esperando jugadores
+            </strong>
+
+        </div>
 
 
-<h3>
-Estado del juego
-</h3>
+
+        <div class="panel">
+
+            <span>Jugadores</span>
+
+            <strong id="jugadores">
+                0 / 2
+            </strong>
+
+        </div>
 
 
-<p id="estado">
 
-Esperando jugadores
+        <div class="panel turno-panel">
 
-</p>
+            <span>Turno actual</span>
+
+            <strong id="turno">
+                Esperando
+            </strong>
+
+        </div>
+
+
+
+        <div class="panel">
+
+            <span>Última jugada</span>
+
+            <strong id="coordenadas">
+                X=-
+                Y=-
+                Z=-
+            </strong>
+
+        </div>
+
+
+
+    </section>
+
+
+
+
+
+    <section class="game-area">
+
+
+        <div id="tablero">
+
+        </div>
+
+
+    </section>
+
+
+
+
+
+    <section class="message-area">
+
+
+        <div id="mensaje-final">
+
+        </div>
+
+
+    </section>
+
+
+
+
+
+
+    <section class="controls">
+
+
+        <button 
+        class="btn primary"
+        onclick="reiniciar()">
+
+            Nueva partida
+
+        </button>
+
+
+
+        <button 
+        class="btn secondary"
+        onclick="salir()">
+
+            Salir
+
+        </button>
+
+
+
+    </section>
 
 
 
@@ -79,146 +154,7 @@ Esperando jugadores
 
 
 
-<div class="status-box">
-
-
-<h3>
-Jugadores conectados
-</h3>
-
-
-<p id="jugadores">
-
-0 / 2
-
-</p>
-
-
-</div>
-
-
-
-
-
-<div class="status-box">
-
-
-<h3>
-Turno actual
-</h3>
-
-
-<p id="turno">
-
-Jugador X
-
-</p>
-
-
-</div>
-
-
-
-
-
-<div class="status-box">
-
-
-<h3>
-Última jugada
-</h3>
-
-
-<p id="coordenadas">
-
-X=-
-Y=-
-Z=-
-
-</p>
-
-
-</div>
-
-
-
-</section>
-
-
-
-
-
-
-<section class="buttons">
-
-
-<button
-onclick="reiniciar()"
-class="btn primary">
-
-Nueva partida
-
-</button>
-
-
-
-
-<button
-onclick="salir()"
-class="btn secondary">
-
-Salir
-
-</button>
-
-
-
-</section>
-
-
-
-
-
-
-
-<section id="tablero">
-
-
-<!--
-Los 4 cubos se generan
-desde game.js
-
-Z=0
-Z=1
-Z=2
-Z=3
--->
-
-
-</section>
-
-
-
-
-
-<div id="mensaje-final">
-
-
-</div>
-
-
-
-
-
-
-</div>
-
-
-
-
-
-<script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
-
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 
 
 <script src="{{ url_for('static', filename='game.js') }}"></script>
@@ -226,7 +162,5 @@ Z=3
 
 
 </body>
-
-
 
 </html>
