@@ -1,0 +1,557 @@
+*{
+
+    box-sizing:border-box;
+
+}
+
+
+
+body{
+
+
+    margin:0;
+
+    min-height:100vh;
+
+    background:#0b1120;
+
+    color:#ffffff;
+
+    font-family:
+
+    "Segoe UI",
+    Arial,
+    sans-serif;
+
+
+}
+
+
+
+
+
+.container{
+
+
+    width:95%;
+
+    max-width:1400px;
+
+    margin:auto;
+
+    padding:30px;
+
+
+}
+
+
+
+
+
+header{
+
+
+    text-align:center;
+
+    margin-bottom:30px;
+
+
+}
+
+
+
+header h1{
+
+
+    margin:0;
+
+    font-size:42px;
+
+    font-weight:700;
+
+
+}
+
+
+
+header p{
+
+
+    margin-top:10px;
+
+    color:#94a3b8;
+
+    font-size:18px;
+
+
+}
+
+
+
+
+
+
+/* PANEL DE INFORMACION */
+
+
+.control-panel{
+
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:15px;
+
+    flex-wrap:wrap;
+
+
+    background:#111827;
+
+    padding:20px;
+
+    border-radius:16px;
+
+
+    box-shadow:
+
+    0 10px 30px rgba(0,0,0,.35);
+
+
+}
+
+
+
+
+
+.status-box{
+
+
+    background:#1e293b;
+
+    min-width:180px;
+
+    padding:15px 20px;
+
+    border-radius:12px;
+
+    text-align:center;
+
+
+}
+
+
+
+.status-box h3{
+
+
+    margin:0 0 10px;
+
+    font-size:15px;
+
+    color:#94a3b8;
+
+
+}
+
+
+
+.status-box p{
+
+
+    margin:0;
+
+    font-size:20px;
+
+    font-weight:600;
+
+
+}
+
+
+
+
+
+
+/* BOTONES */
+
+
+.buttons{
+
+
+    text-align:center;
+
+    margin:25px 0;
+
+
+}
+
+
+
+.btn{
+
+
+    padding:12px 30px;
+
+    border:none;
+
+    border-radius:10px;
+
+    font-size:17px;
+
+    cursor:pointer;
+
+    margin:0 8px;
+
+    transition:.3s;
+
+    color:white;
+
+
+}
+
+
+
+.primary{
+
+
+    background:#2563eb;
+
+
+}
+
+
+
+.primary:hover{
+
+
+    background:#1d4ed8;
+
+    transform:translateY(-2px);
+
+
+}
+
+
+
+.secondary{
+
+
+    background:#475569;
+
+
+}
+
+
+
+.secondary:hover{
+
+
+    background:#334155;
+
+    transform:translateY(-2px);
+
+
+}
+
+
+
+
+
+
+
+/* TABLERO GENERAL */
+
+
+#tablero{
+
+
+    display:flex;
+
+    flex-direction:row;
+
+    justify-content:center;
+
+    align-items:flex-start;
+
+    gap:18px;
+
+    flex-wrap:nowrap;
+
+
+    overflow-x:auto;
+
+    padding:20px;
+
+
+}
+
+
+
+
+
+
+
+/* CADA NIVEL Z */
+
+
+.capa{
+
+
+    background:#111827;
+
+    border-radius:16px;
+
+    padding:15px;
+
+
+    box-shadow:
+
+    0 8px 25px rgba(0,0,0,.35);
+
+
+}
+
+
+
+.capa h3{
+
+
+    text-align:center;
+
+    margin:0 0 15px;
+
+
+    color:#cbd5e1;
+
+    font-size:18px;
+
+
+}
+
+
+
+
+
+
+/* GRID 4x4 */
+
+
+.plano{
+
+
+    display:grid;
+
+    grid-template-columns:
+
+    repeat(4,65px);
+
+
+    gap:7px;
+
+
+}
+
+
+
+
+
+
+/* CASILLAS */
+
+
+.casilla{
+
+
+    width:65px;
+
+    height:65px;
+
+
+    background:#0f172a;
+
+
+    border:1px solid #334155;
+
+
+    border-radius:10px;
+
+
+    cursor:pointer;
+
+
+    font-size:32px;
+
+    font-weight:700;
+
+
+    color:white;
+
+
+    transition:.2s;
+
+
+}
+
+
+
+
+
+.casilla:hover{
+
+
+    background:#1e293b;
+
+    transform:scale(1.05);
+
+
+}
+
+
+
+
+
+/* JUGADORES */
+
+
+.x{
+
+
+    color:#38bdf8;
+
+
+}
+
+
+
+
+
+.o{
+
+
+    color:#fb7185;
+
+
+}
+
+
+
+
+
+
+
+/* LINEA GANADORA */
+
+
+.ganadora{
+
+
+    background:#16a34a!important;
+
+
+    color:white!important;
+
+
+    border-color:white;
+
+
+    animation:
+
+    ganador .8s infinite alternate;
+
+
+}
+
+
+
+
+@keyframes ganador{
+
+
+    from{
+
+
+        transform:scale(1);
+
+
+    }
+
+
+    to{
+
+
+        transform:scale(1.12);
+
+
+    }
+
+
+}
+
+
+
+
+
+
+
+/* MENSAJE FINAL */
+
+
+#mensaje-final{
+
+
+    text-align:center;
+
+    margin-top:25px;
+
+    font-size:28px;
+
+    font-weight:bold;
+
+
+}
+
+
+
+
+
+/* RESPONSIVE */
+
+
+@media(max-width:900px){
+
+
+    #tablero{
+
+
+        justify-content:flex-start;
+
+    }
+
+
+
+    .plano{
+
+
+        grid-template-columns:
+
+        repeat(4,55px);
+
+    }
+
+
+
+    .casilla{
+
+
+        width:55px;
+
+        height:55px;
+
+        font-size:25px;
+
+
+    }
+
+
+}

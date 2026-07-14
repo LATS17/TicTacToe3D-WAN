@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+
+<head>
+
+
+<meta charset="UTF-8">
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>
+Tic Tac Toe 3D WAN
+</title>
+
+
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='style.css') }}">
+
+
+
+</head>
+
+
+
+<body>
+
+
+<div class="container">
+
+
+
+<header>
+
+
+<h1>
+Tic Tac Toe 3D WAN
+</h1>
+
+
+<p>
+Juego multijugador en red WAN
+</p>
+
+
+</header>
+
+
+
+
+
+<section class="control-panel">
+
+
+
+<div class="status-box">
+
+
+<h3>
+Estado del juego
+</h3>
+
+
+<p id="estado">
+
+Esperando jugadores
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+<div class="status-box">
+
+
+<h3>
+Jugadores conectados
+</h3>
+
+
+<p id="jugadores">
+
+0 / 2
+
+</p>
+
+
+</div>
+
+
+
+
+
+<div class="status-box">
+
+
+<h3>
+Turno actual
+</h3>
+
+
+<p id="turno">
+
+Jugador X
+
+</p>
+
+
+</div>
+
+
+
+
+
+<div class="status-box">
+
+
+<h3>
+Última jugada
+</h3>
+
+
+<p id="coordenadas">
+
+X=-
+Y=-
+Z=-
+
+</p>
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+<section class="buttons">
+
+
+<button
+onclick="reiniciar()"
+class="btn primary">
+
+Nueva partida
+
+</button>
+
+
+
+
+<button
+onclick="salir()"
+class="btn secondary">
+
+Salir
+
+</button>
+
+
+
+</section>
+
+
+
+
+
+
+
+<section id="tablero">
+
+
+<!--
+Los 4 cubos se generan
+desde game.js
+
+Z=0
+Z=1
+Z=2
+Z=3
+-->
+
+
+</section>
+
+
+
+
+
+<div id="mensaje-final">
+
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+
+
+<script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
+
+
+
+<script src="{{ url_for('static', filename='game.js') }}"></script>
+
+
+
+</body>
+
+
+
+</html>
