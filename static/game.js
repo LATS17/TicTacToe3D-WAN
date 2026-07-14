@@ -645,6 +645,8 @@ function limpiarTablero(){
 function salir(){
 
 
+    socket.emit("salir");
+
 
     window.location.href="/";
 
