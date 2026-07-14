@@ -534,7 +534,7 @@ function mostrarMensaje(texto){
 
 socket.on(
 
-"reiniciar",
+"reiniciado",
 
 ()=>{
 
@@ -575,31 +575,50 @@ function reiniciar(){
 function limpiarTablero(){
 
 
-
     document
-
     .querySelectorAll(".casilla")
-
     .forEach(casilla=>{
-
 
 
         casilla.innerText="";
 
 
-
         casilla.classList.remove(
-
             "x",
-
             "o",
-
             "ganadora"
-
         );
 
 
+        casilla.disabled=false;
+
+
     });
+
+
+
+
+    document.getElementById(
+        "coordenadas"
+    ).innerText=
+    "X=- Y=- Z=-";
+
+
+
+
+
+    document.getElementById(
+        "mensaje-final"
+    ).innerText="";
+
+
+
+
+
+    actualizarTurno("X");
+
+
+}
 
 
 
