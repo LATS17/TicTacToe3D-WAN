@@ -1,82 +1,81 @@
 const socket = io();
 
 
-
 const tablero = document.getElementById("tablero");
-
-
-
-
-
-let jugadorActual = "";
-
-
 
 
 
 function crearTablero(){
 
 
-    tablero.innerHTML="";
+    tablero.innerHTML = "";
 
 
     for(let z = 0; z < 4; z++){
 
 
-        let capa=document.createElement("div");
+        const capa = document.createElement("div");
 
-        capa.className="capa";
+        capa.className = "capa";
 
 
-        let titulo=document.createElement("h3");
 
-        titulo.innerText="NIVEL Z = "+z;
+        const titulo = document.createElement("h3");
+
+        titulo.innerText = "NIVEL Z = " + z;
 
 
         capa.appendChild(titulo);
 
 
 
+        const plano = document.createElement("div");
 
-
-        let plano=document.createElement("div");
-
-        plano.className="plano";
-
+        plano.className = "plano";
 
 
 
 
-        for(let y=0;y<4;y++){
+        for(let y = 0; y < 4; y++){
 
 
-            for(let x=0;x<4;x++){
-
-
-                let casilla=document.createElement("button");
-
-
-                casilla.className="casilla";
-
-
-                casilla.dataset.x=x;
-
-                casilla.dataset.y=y;
-
-                casilla.dataset.z=z;
+            for(let x = 0; x < 4; x++){
 
 
 
+                const casilla = document.createElement("button");
 
 
-                casilla.onclick=function(){
+                casilla.className = "casilla";
+
+
+                casilla.dataset.x = x;
+
+                casilla.dataset.y = y;
+
+                casilla.dataset.z = z;
 
 
 
-                    realizarMovimiento(
-                        x,
-                        y,
-                        z
+
+                casilla.onclick = function(){
+
+
+
+                    socket.emit(
+
+                        "movimiento",
+
+                        {
+
+                            x:x,
+
+                            y:y,
+
+                            z:z
+
+                        }
+
                     );
 
 
@@ -84,10 +83,7 @@ function crearTablero(){
 
 
 
-
-
                 plano.appendChild(casilla);
-
 
 
             }
@@ -98,7 +94,6 @@ function crearTablero(){
 
 
         capa.appendChild(plano);
-
 
         tablero.appendChild(capa);
 
@@ -111,41 +106,7 @@ function crearTablero(){
 
 
 
-
-
 crearTablero();
-
-
-
-
-
-
-
-
-
-function realizarMovimiento(x,y,z){
-
-
-    socket.emit(
-
-        "movimiento",
-
-        {
-
-            x:x,
-
-            y:y,
-
-            z:z
-
-        }
-
-    );
-
-
-}
-
-
 
 
 
@@ -166,23 +127,13 @@ socket.on(
 
     if(data.turno){
 
-
-        actualizarTurno(
-            data.turno
-        );
-
+        actualizarTurno(data.turno);
 
     }
 
 
 
-    if(data.x!==undefined){
-
-
-        actualizarCoordenadas(data);
-
-
-    }
+    actualizarCoordenadas(data);
 
 
 
@@ -201,9 +152,7 @@ socket.on(
     if(data.mensaje){
 
 
-        mostrarMensaje(
-            data.mensaje
-        );
+        mostrarMensaje(data.mensaje);
 
 
     }
@@ -219,12 +168,11 @@ socket.on(
 
 
 
-
 function colocarFicha(data){
 
 
 
-    let casillas=
+    const casillas =
 
     document.querySelectorAll(".casilla");
 
@@ -238,24 +186,23 @@ function colocarFicha(data){
 
         if(
 
-            casilla.dataset.x==data.x &&
+            casilla.dataset.x == data.x &&
 
-            casilla.dataset.y==data.y &&
+            casilla.dataset.y == data.y &&
 
-            casilla.dataset.z==data.z
-
+            casilla.dataset.z == data.z
 
         ){
 
 
 
-            casilla.innerText=data.jugador;
+            casilla.innerText = data.jugador;
 
 
 
             casilla.classList.add(
 
-                data.jugador==="X"
+                data.jugador === "X"
 
                 ?
 
@@ -272,87 +219,8 @@ function colocarFicha(data){
         }
 
 
+
     });
-
-
-
-}
-
-
-
-
-
-
-
-
-
-function actualizarTurno(jugador){
-
-
-
-    jugadorActual=jugador;
-
-
-
-    let turno=
-
-    document.getElementById("turno");
-
-
-
-    turno.innerText=
-
-    "Jugador "+jugador;
-
-
-
-
-
-    if(jugador==="X"){
-
-
-
-        turno.style.color="#38bdf8";
-
-
-
-    }
-
-    else{
-
-
-
-        turno.style.color="#fb7185";
-
-
-
-    }
-
-
-
-}
-
-
-
-
-
-
-
-
-function actualizarCoordenadas(data){
-
-
-
-    document.getElementById(
-
-        "coordenadas"
-
-    ).innerText=
-
-
-    "X="+data.x+
-    "  Y="+data.y+
-    "  Z="+data.z;
 
 
 
@@ -373,55 +241,53 @@ socket.on(
 (data)=>{
 
 
+    const jugadores =
 
-    document.getElementById(
-
-        "jugadores"
-
-    ).innerText=
+    document.getElementById("jugadores");
 
 
-    data.jugadores+" / 2";
+    const estado =
 
+    document.getElementById("estado");
 
 
 
+    if(jugadores){
 
-    let estado=
+        jugadores.innerText =
 
-    document.getElementById(
-
-        "estado"
-
-    );
-
-
-
-
-
-    estado.innerText=
-
-    data.estado;
-
-
-
-    if(data.jugadores===2){
-
-
-        estado.style.color="#22c55e";
-
+        data.jugadores + " / 2";
 
     }
 
 
-    else{
 
 
-        estado.style.color="#facc15";
+    if(estado){
+
+
+        estado.innerText = data.estado;
+
+
+
+        if(data.jugadores === 2){
+
+
+            estado.style.color="#22c55e";
+
+
+        }
+
+        else{
+
+
+            estado.style.color="#facc15";
+
+
+        }
 
 
     }
-
 
 
 });
@@ -434,14 +300,105 @@ socket.on(
 
 
 
-function mostrarVictoria(data){
+function actualizarTurno(jugador){
 
 
 
-    if(!data.linea)
+    const turno =
+
+    document.getElementById("turno");
+
+
+
+    if(!turno)
         return;
 
 
+
+
+    turno.innerText =
+
+    "Jugador " + jugador;
+
+
+
+
+
+    if(jugador === "X"){
+
+
+
+        turno.style.color="#38bdf8";
+
+
+        turno.style.textShadow=
+
+        "0 0 20px #38bdf8";
+
+
+    }
+
+    else{
+
+
+        turno.style.color="#fb7185";
+
+
+        turno.style.textShadow=
+
+        "0 0 20px #fb7185";
+
+
+    }
+
+
+
+}
+
+
+
+
+
+
+
+
+
+function actualizarCoordenadas(data){
+
+
+
+    const coordenadas =
+
+    document.getElementById("coordenadas");
+
+
+
+    if(coordenadas){
+
+
+        coordenadas.innerText =
+
+        "X=" + data.x +
+
+        " Y=" + data.y +
+
+        " Z=" + data.z;
+
+
+    }
+
+
+}
+
+
+
+
+
+
+
+
+
+function mostrarVictoria(data){
 
 
 
@@ -457,15 +414,13 @@ function mostrarVictoria(data){
 
 
 
-
-
             if(
 
-            casilla.dataset.x==posicion.x &&
+                casilla.dataset.x == posicion.x &&
 
-            casilla.dataset.y==posicion.y &&
+                casilla.dataset.y == posicion.y &&
 
-            casilla.dataset.z==posicion.z
+                casilla.dataset.z == posicion.z
 
             ){
 
@@ -478,9 +433,7 @@ function mostrarVictoria(data){
                 );
 
 
-
             }
-
 
 
 
@@ -489,8 +442,6 @@ function mostrarVictoria(data){
 
 
     });
-
-
 
 
 
@@ -508,17 +459,19 @@ function mostrarMensaje(texto){
 
 
 
-    let mensaje=
+    const mensaje =
 
-    document.getElementById(
-
-        "mensaje-final"
-
-    );
+    document.getElementById("mensaje-final");
 
 
 
-    mensaje.innerText=texto;
+    if(mensaje){
+
+
+        mensaje.innerText = texto;
+
+
+    }
 
 
 
@@ -531,6 +484,29 @@ function mostrarMensaje(texto){
 
 
 
+
+socket.on(
+
+"error",
+
+(mensaje)=>{
+
+
+    mostrarMensaje(mensaje);
+
+
+});
+
+
+
+
+
+
+
+
+
+// CORREGIDO:
+// Flask envía "reiniciado"
 
 socket.on(
 
@@ -572,25 +548,36 @@ function reiniciar(){
 
 
 
+
 function limpiarTablero(){
 
 
+
     document
+
     .querySelectorAll(".casilla")
+
     .forEach(casilla=>{
 
 
-        casilla.innerText="";
+        casilla.innerText = "";
+
 
 
         casilla.classList.remove(
+
             "x",
+
             "o",
+
             "ganadora"
+
         );
 
 
+
         casilla.disabled=false;
+
 
 
     });
@@ -598,18 +585,45 @@ function limpiarTablero(){
 
 
 
-    document.getElementById(
-        "coordenadas"
-    ).innerText=
-    "X=- Y=- Z=-";
+
+
+    const coordenadas =
+
+    document.getElementById("coordenadas");
+
+
+
+    if(coordenadas){
+
+
+        coordenadas.innerText=
+
+        "X=- Y=- Z=-";
+
+
+    }
 
 
 
 
 
-    document.getElementById(
-        "mensaje-final"
-    ).innerText="";
+
+
+    const mensaje =
+
+    document.getElementById("mensaje-final");
+
+
+
+    if(mensaje){
+
+
+        mensaje.innerText="";
+
+
+    }
+
+
 
 
 
@@ -624,31 +638,6 @@ function limpiarTablero(){
 
 
 
-    document.getElementById(
-
-        "coordenadas"
-
-    ).innerText=
-
-    "X=- Y=- Z=-";
-
-
-
-
-
-    document.getElementById(
-
-        "mensaje-final"
-
-    ).innerText="";
-
-
-
-}
-
-
-
-
 
 
 
@@ -658,7 +647,6 @@ function salir(){
 
 
     window.location.href="/";
-
 
 
 }
