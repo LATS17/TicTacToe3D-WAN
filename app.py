@@ -296,6 +296,22 @@ def reiniciar():
 
     emitir_estado()
 
+@socketio.on("salir")
+def salir():
+    
+    sid = request.sid
+
+    if sid in jugadores:
+        jugadores.remove(sid)
+
+
+    socketio.emit(
+        "estado_jugadores",
+        {
+            "jugadores": len(jugadores),
+            "estado": "Esperando jugadores"
+        }
+    )
 
 # INICIO
 
