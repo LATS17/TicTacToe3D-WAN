@@ -1,3 +1,6 @@
+
+/* RESET */
+
 *{
 
     box-sizing:border-box;
@@ -8,26 +11,91 @@
 
 body{
 
-
     margin:0;
 
     min-height:100vh;
 
-    background:#0b1120;
-
-    color:#ffffff;
-
     font-family:
 
     "Segoe UI",
+    "Roboto",
     Arial,
     sans-serif;
+
+
+    color:white;
+
+
+    background:
+
+    radial-gradient(
+        circle at top,
+        #1e3a8a,
+        transparent 35%
+    ),
+
+    linear-gradient(
+        135deg,
+        #020617,
+        #0f172a,
+        #111827,
+        #1e1b4b
+    );
+
+
+    background-size:
+
+    200% 200%;
+
+
+    animation:
+
+    backgroundMove 15s ease infinite;
+
+
+    overflow-x:hidden;
+
+}
+
+
+
+@keyframes backgroundMove{
+
+
+    0%{
+
+        background-position:
+
+        0% 50%;
+
+    }
+
+
+    50%{
+
+        background-position:
+
+        100% 50%;
+
+    }
+
+
+    100%{
+
+        background-position:
+
+        0% 50%;
+
+    }
 
 
 }
 
 
 
+
+
+/*   MAIN CONTAINER */
 
 
 .container{
@@ -35,11 +103,11 @@ body{
 
     width:95%;
 
-    max-width:1400px;
+    max-width:1500px;
 
     margin:auto;
 
-    padding:30px;
+    padding:35px;
 
 
 }
@@ -48,12 +116,49 @@ body{
 
 
 
+/*  HEADER */
+
+
 header{
 
 
     text-align:center;
 
-    margin-bottom:30px;
+    margin-bottom:35px;
+
+
+    animation:
+
+    headerIntro 1s ease;
+
+
+}
+
+
+
+@keyframes headerIntro{
+
+
+    from{
+
+        opacity:0;
+
+        transform:
+
+        translateY(-40px);
+
+    }
+
+
+    to{
+
+        opacity:1;
+
+        transform:
+
+        translateY(0);
+
+    }
 
 
 }
@@ -65,9 +170,34 @@ header h1{
 
     margin:0;
 
-    font-size:42px;
 
-    font-weight:700;
+    font-size:48px;
+
+
+    letter-spacing:3px;
+
+
+    text-transform:uppercase;
+
+
+    background:
+
+    linear-gradient(
+        90deg,
+        #38bdf8,
+        #818cf8,
+        #c084fc
+    );
+
+
+    -webkit-background-clip:text;
+
+    color:transparent;
+
+
+    text-shadow:
+
+    0 0 30px rgba(56,189,248,.5);
 
 
 }
@@ -77,12 +207,9 @@ header h1{
 header p{
 
 
-    margin-top:10px;
-
     color:#94a3b8;
 
     font-size:18px;
-
 
 }
 
@@ -90,8 +217,7 @@ header p{
 
 
 
-
-/* PANEL DE INFORMACION */
+/* INFORMATION PANEL */
 
 
 .control-panel{
@@ -101,21 +227,38 @@ header p{
 
     justify-content:center;
 
-    gap:15px;
-
     flex-wrap:wrap;
 
+    gap:20px;
 
-    background:#111827;
 
-    padding:20px;
+    padding:25px;
 
-    border-radius:16px;
+
+    background:
+
+    rgba(15,23,42,.65);
+
+
+    backdrop-filter:
+
+    blur(15px);
+
+
+
+    border:
+
+    1px solid rgba(255,255,255,.1);
+
+
+    border-radius:20px;
+
 
 
     box-shadow:
 
-    0 10px 30px rgba(0,0,0,.35);
+    0 0 40px rgba(0,0,0,.5);
+
 
 
 }
@@ -127,15 +270,56 @@ header p{
 .status-box{
 
 
-    background:#1e293b;
+    min-width:200px;
 
-    min-width:180px;
 
-    padding:15px 20px;
+    padding:20px;
 
-    border-radius:12px;
 
     text-align:center;
+
+
+    border-radius:16px;
+
+
+    background:
+
+    linear-gradient(
+
+        145deg,
+
+        rgba(30,41,59,.9),
+
+        rgba(15,23,42,.8)
+
+    );
+
+
+
+    border:
+
+    1px solid rgba(56,189,248,.25);
+
+
+
+    transition:.3s;
+
+
+}
+
+
+
+.status-box:hover{
+
+
+    transform:
+
+    translateY(-5px);
+
+
+    box-shadow:
+
+    0 0 25px rgba(56,189,248,.35);
 
 
 }
@@ -147,9 +331,14 @@ header p{
 
     margin:0 0 10px;
 
-    font-size:15px;
 
     color:#94a3b8;
+
+
+    font-size:14px;
+
+
+    text-transform:uppercase;
 
 
 }
@@ -161,9 +350,11 @@ header p{
 
     margin:0;
 
-    font-size:20px;
 
-    font-weight:600;
+    font-size:22px;
+
+
+    font-weight:700;
 
 
 }
@@ -173,7 +364,7 @@ header p{
 
 
 
-/* BOTONES */
+/*  BUTTONS */
 
 
 .buttons{
@@ -181,31 +372,106 @@ header p{
 
     text-align:center;
 
-    margin:25px 0;
+    margin:35px 0;
 
 
 }
 
 
 
+
 .btn{
 
 
-    padding:12px 30px;
+    padding:
+
+    14px 35px;
+
+
+    margin:10px;
+
 
     border:none;
 
-    border-radius:10px;
 
-    font-size:17px;
+    border-radius:14px;
+
 
     cursor:pointer;
 
-    margin:0 8px;
+
+    color:white;
+
+
+    font-size:17px;
+
+
+    font-weight:700;
+
+
+    letter-spacing:1px;
+
+
 
     transition:.3s;
 
-    color:white;
+
+    position:relative;
+
+
+    overflow:hidden;
+
+
+}
+
+
+
+.btn::before{
+
+
+    content:"";
+
+
+    position:absolute;
+
+
+    top:0;
+
+    left:-100%;
+
+
+    width:100%;
+
+
+    height:100%;
+
+
+    background:
+
+    linear-gradient(
+
+        120deg,
+
+        transparent,
+
+        rgba(255,255,255,.4),
+
+        transparent
+
+    );
+
+
+    transition:.5s;
+
+
+}
+
+
+
+.btn:hover::before{
+
+
+    left:100%;
 
 
 }
@@ -215,19 +481,22 @@ header p{
 .primary{
 
 
-    background:#2563eb;
+    background:
+
+    linear-gradient(
+
+        135deg,
+
+        #2563eb,
+
+        #38bdf8
+
+    );
 
 
-}
+    box-shadow:
 
-
-
-.primary:hover{
-
-
-    background:#1d4ed8;
-
-    transform:translateY(-2px);
+    0 0 25px rgba(56,189,248,.5);
 
 
 }
@@ -237,19 +506,31 @@ header p{
 .secondary{
 
 
-    background:#475569;
+    background:
+
+    linear-gradient(
+
+        135deg,
+
+        #475569,
+
+        #64748b
+
+    );
 
 
 }
 
 
 
-.secondary:hover{
 
 
-    background:#334155;
+.btn:hover{
 
-    transform:translateY(-2px);
+
+    transform:
+
+    scale(1.08);
 
 
 }
@@ -260,7 +541,7 @@ header p{
 
 
 
-/* TABLERO GENERAL */
+/*  GAME AREA */
 
 
 #tablero{
@@ -268,20 +549,23 @@ header p{
 
     display:flex;
 
+
     flex-direction:row;
+
 
     justify-content:center;
 
+
     align-items:flex-start;
 
-    gap:18px;
 
-    flex-wrap:nowrap;
+    gap:25px;
 
 
     overflow-x:auto;
 
-    padding:20px;
+
+    padding:30px;
 
 
 }
@@ -292,25 +576,108 @@ header p{
 
 
 
-/* CADA NIVEL Z */
+/*    Z LEVELS */
 
 
 .capa{
 
 
-    background:#111827;
+    padding:18px;
 
-    border-radius:16px;
 
-    padding:15px;
+    border-radius:22px;
+
+
+
+    background:
+
+    linear-gradient(
+
+        145deg,
+
+        rgba(30,41,59,.9),
+
+        rgba(2,6,23,.85)
+
+    );
+
+
+
+    border:
+
+    1px solid rgba(129,140,248,.4);
+
 
 
     box-shadow:
 
-    0 8px 25px rgba(0,0,0,.35);
+    0 0 30px rgba(99,102,241,.25);
+
+
+
+    animation:
+
+    cubeEnter .8s ease;
 
 
 }
+
+
+
+.capa:nth-child(2){
+
+    animation-delay:.15s;
+
+}
+
+
+.capa:nth-child(3){
+
+    animation-delay:.30s;
+
+}
+
+
+.capa:nth-child(4){
+
+    animation-delay:.45s;
+
+}
+
+
+
+
+@keyframes cubeEnter{
+
+
+    from{
+
+        opacity:0;
+
+        transform:
+
+        translateY(60px)
+        rotateX(45deg);
+
+
+    }
+
+
+    to{
+
+        opacity:1;
+
+        transform:
+
+        translateY(0)
+        rotateX(0);
+
+
+    }
+
+
+}
+
 
 
 
@@ -319,12 +686,16 @@ header p{
 
     text-align:center;
 
-    margin:0 0 15px;
-
 
     color:#cbd5e1;
 
-    font-size:18px;
+
+    margin:
+
+    0 0 15px;
+
+
+    letter-spacing:1px;
 
 
 }
@@ -334,7 +705,7 @@ header p{
 
 
 
-/* GRID 4x4 */
+/*   GRID */
 
 
 .plano{
@@ -342,12 +713,13 @@ header p{
 
     display:grid;
 
+
     grid-template-columns:
 
-    repeat(4,65px);
+    repeat(4,70px);
 
 
-    gap:7px;
+    gap:8px;
 
 
 }
@@ -357,42 +729,57 @@ header p{
 
 
 
-/* CASILLAS */
+/* CELLS */
 
 
 .casilla{
 
 
-    width:65px;
-
-    height:65px;
+    width:70px;
 
 
-    background:#0f172a;
+    height:70px;
 
 
-    border:1px solid #334155;
+
+    border-radius:14px;
 
 
-    border-radius:10px;
+
+    background:
+
+    rgba(15,23,42,.8);
 
 
-    cursor:pointer;
 
+    border:
 
-    font-size:32px;
+    1px solid rgba(148,163,184,.3);
 
-    font-weight:700;
 
 
     color:white;
 
 
-    transition:.2s;
+    font-size:36px;
+
+
+    font-weight:900;
+
+
+    cursor:pointer;
+
+
+
+    transition:
+
+    transform .2s,
+    box-shadow .2s,
+    background .2s;
+
 
 
 }
-
 
 
 
@@ -400,9 +787,22 @@ header p{
 .casilla:hover{
 
 
-    background:#1e293b;
+    transform:
 
-    transform:scale(1.05);
+    translateY(-5px)
+    scale(1.08);
+
+
+
+    background:
+
+    rgba(30,41,59,.9);
+
+
+
+    box-shadow:
+
+    0 0 20px rgba(56,189,248,.5);
 
 
 }
@@ -411,7 +811,8 @@ header p{
 
 
 
-/* JUGADORES */
+
+/*    PLAYER X */
 
 
 .x{
@@ -420,10 +821,27 @@ header p{
     color:#38bdf8;
 
 
+
+    text-shadow:
+
+
+    0 0 15px #38bdf8;
+
+
+
+    animation:
+
+    pieceAppear .35s ease;
+
+
 }
 
 
 
+
+
+
+/* PLAYER O */
 
 
 .o{
@@ -432,6 +850,51 @@ header p{
     color:#fb7185;
 
 
+
+    text-shadow:
+
+
+    0 0 15px #fb7185;
+
+
+
+    animation:
+
+    pieceAppear .35s ease;
+
+
+}
+
+
+
+
+
+
+@keyframes pieceAppear{
+
+
+    from{
+
+        transform:
+
+        scale(0)
+        rotate(180deg);
+
+
+    }
+
+
+    to{
+
+        transform:
+
+        scale(1)
+        rotate(0);
+
+
+    }
+
+
 }
 
 
@@ -440,24 +903,33 @@ header p{
 
 
 
-/* LINEA GANADORA */
+
+/*    WINNING LINE */
 
 
 .ganadora{
 
 
-    background:#16a34a!important;
+    background:
+
+    linear-gradient(
+
+        135deg,
+
+        #16a34a,
+
+        #4ade80
+
+    ) !important;
+
 
 
     color:white!important;
 
 
-    border-color:white;
-
-
     animation:
 
-    ganador .8s infinite alternate;
+    winnerPulse .7s infinite alternate;
 
 
 }
@@ -465,13 +937,16 @@ header p{
 
 
 
-@keyframes ganador{
+
+@keyframes winnerPulse{
 
 
     from{
 
 
-        transform:scale(1);
+        box-shadow:
+
+        0 0 10px #22c55e;
 
 
     }
@@ -480,7 +955,9 @@ header p{
     to{
 
 
-        transform:scale(1.12);
+        box-shadow:
+
+        0 0 40px #22c55e;
 
 
     }
@@ -494,7 +971,8 @@ header p{
 
 
 
-/* MENSAJE FINAL */
+
+/*   FINAL MESSAGE */
 
 
 #mensaje-final{
@@ -502,11 +980,25 @@ header p{
 
     text-align:center;
 
-    margin-top:25px;
 
-    font-size:28px;
+    margin-top:30px;
 
-    font-weight:bold;
+
+    font-size:34px;
+
+
+    font-weight:900;
+
+
+
+    color:#facc15;
+
+
+    text-shadow:
+
+
+    0 0 25px #facc15;
+
 
 
 }
@@ -515,10 +1007,12 @@ header p{
 
 
 
-/* RESPONSIVE */
 
 
-@media(max-width:900px){
+/*    RESPONSIVE */
+
+
+@media(max-width:1000px){
 
 
     #tablero{
@@ -526,8 +1020,30 @@ header p{
 
         justify-content:flex-start;
 
+
     }
 
+
+
+}
+
+
+
+@media(max-width:600px){
+
+
+    .container{
+
+        padding:15px;
+
+    }
+
+
+    header h1{
+
+        font-size:32px;
+
+    }
 
 
     .plano{
@@ -537,8 +1053,8 @@ header p{
 
         repeat(4,55px);
 
-    }
 
+    }
 
 
     .casilla{
@@ -548,7 +1064,8 @@ header p{
 
         height:55px;
 
-        font-size:25px;
+
+        font-size:28px;
 
 
     }
